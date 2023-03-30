@@ -4,5 +4,5 @@ jobs:
   checklist:
     runs-on: self-hosted
     steps:
-      - name: hello
-        run: echo 'hello world'
+      - name: List Variables 
+        run: set
