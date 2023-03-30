@@ -31,6 +31,7 @@ jobs:
         id: build_step
         run: |
           echo "--- Build ---"
+          export BUILD_ID=$RANDOM
           echo "build_id=$BUILD_ID" >> $GITHUB_OUTPUT
   deploy:
     needs: build
