@@ -1,5 +1,7 @@
 name: demo02
 on: push
+env:
+  env_var: ${{ vars.APPLICATION_NAME }}
 jobs:
   checklist:
     runs-on: self-hosted
@@ -7,4 +9,4 @@ jobs:
       - name: List Variables 
         run: set
       - name: Application name
-        run: echo $APPLICATION_NAME
+        run: echo $env_var
