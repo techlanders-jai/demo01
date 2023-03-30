@@ -36,7 +36,7 @@ jobs:
       - name: list files 
         id: list_files 
         run: |
-          export data=`ls /`
+          export data=`cat README.md`
           echo "data=$data" >> $GITHUB_OUTPUT
   deploy:
     needs: build
