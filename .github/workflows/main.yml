@@ -33,18 +33,12 @@ jobs:
           echo "--- Build ---"
           export BUILD_ID=$RANDOM
           echo "build_id=$BUILD_ID" >> $GITHUB_OUTPUT
-      - name: list files 
-        id: list_files 
-        run: |
-          export data=$RANDOM
-          echo "data=$data" >> $GITHUB_OUTPUT
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: echo ./deploy --build ${{ needs.build.outputs.build_id }}
-      - run: echo ${{ needs.build.outputs.data }}
   debug:
     needs: [build, deploy]
     runs-on: ubuntu-latest
