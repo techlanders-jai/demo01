@@ -1,18 +1,47 @@
 name: demo02
 on: push
 env:
+  mascot: Mona
   env_var: ${{ vars.APPLICATION_NAME }}
+  password: ${{ secrets.PASSWORD }}
+  super_duper_var: totally_awesome
+
 jobs:
-  checklist:
-    runs-on: self-hosted
-    env:
-      NUM01: 10
+  windows_job:
+    runs-on: windows-latest
     steps:
-      - name: List Variables 
-        run: set
-      - name: Application name
-        run: echo $env_var
-      - name: print number
-        run: echo $NUM01
+      - run: echo 'Hi ${{ env.mascot }}'  # Hi Mona
+      - run: echo 'Hi ${{ env.mascot }}'  # Hi Octocat
         env:
-          NUM01: 20
+          mascot: Octocat
+  linux_job:
+    runs-on: ubuntu-latest
+    env:
+      mascot: Tux
+    steps:
+      - run: echo 'Hi ${{ env.mascot }}'  # Hi Tux
+      
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      build_id: ${{ steps.build_step.outputs.build_id }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        id: build_step
+        run: |
+          ./build
+          echo "build_id=$BUILD_ID" >> $GITHUB_OUTPUT
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./deploy --build ${{ needs.build.outputs.build_id }}
+  debug:
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./debug
