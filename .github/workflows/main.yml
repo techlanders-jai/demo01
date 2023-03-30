@@ -5,8 +5,14 @@ env:
 jobs:
   checklist:
     runs-on: self-hosted
+    env:
+      NUM01: 10
     steps:
       - name: List Variables 
         run: set
       - name: Application name
         run: echo $env_var
+      - name: print number
+        run: echo $NUM01
+        env:
+          NUM01: 20
